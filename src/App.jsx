@@ -39,49 +39,49 @@ const SERVICES = [
     title: "Kundli & Life Guidance",
     icon: ScrollText,
     description:
-      "Personalized birth-chart guidance to understand important life themes, timing, strengths, challenges, and major decisions.",
+      "Personalized birth-chart guidance for important life themes, timing, strengths, challenges, and major decisions.",
   },
   {
     title: "Career, Profession & Business",
     icon: BriefcaseBusiness,
     description:
-      "Astrological guidance for career direction, professional challenges, work decisions, business concerns, and growth-related matters.",
+      "Guidance for career direction, professional challenges, work decisions, business concerns, and growth-related matters.",
   },
   {
     title: "Marriage & Relationships",
     icon: Heart,
     description:
-      "Guidance for relationship concerns, marriage-related questions, delays, compatibility, and family harmony.",
+      "Guidance for relationship concerns, marriage-related questions, compatibility, delays, and family harmony.",
   },
   {
     title: "Children & Family",
     icon: Users,
     description:
-      "Guidance for child-related concerns, family matters, progeny questions, and career direction for children.",
+      "Guidance for child-related concerns, family matters, progeny questions, and children’s career direction.",
   },
   {
     title: "Finance & Stuck Matters",
     icon: Landmark,
     description:
-      "Astrological guidance around debt, stuck money, financial obstacles, and difficult matters requiring clearer direction.",
+      "Guidance around debt, stuck money, financial obstacles, and difficult matters requiring clearer direction.",
   },
   {
     title: "Health-Related Guidance",
     icon: Activity,
     description:
-      "Astrological guidance concerning health-related matters, patterns, and periods as part of a wider life consultation.",
+      "Astrological guidance around health-related patterns and periods as part of a wider life consultation.",
   },
   {
-    title: "Vastu Guidance",
+    title: "Vastu",
     icon: Home,
     description:
-      "Vastu guidance for homes, workplaces, property-related concerns, and creating greater balance in your environment.",
+      "Guidance for homes, workplaces, property concerns, and creating greater balance in your environment.",
   },
   {
     title: "Personalized Remedies",
     icon: Sparkles,
     description:
-      "Practical, personalized remedies recommended according to the individual chart, concern, and consultation context.",
+      "Practical, personalized remedies suggested according to the individual chart and consultation context.",
   },
 ];
 
@@ -261,22 +261,26 @@ export default function App() {
               </motion.div>
 
               <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.55, delay: 0.08 }}>
-                <Card className="hero-visual-card">
-                  <div className="celestial-mark" aria-hidden="true">
-                    <span className="orbit orbit-one" />
-                    <span className="orbit orbit-two" />
-                    <span className="orbit orbit-three" />
-                    <Sparkles size={32} />
+                <Card className="hero-credential-card">
+                  <div className="hero-credential-heading">
+                    <div className="hero-credential-icon"><GraduationCap size={24} /></div>
+                    <div>
+                      <p className="hero-credential-label">Formal qualification</p>
+                      <h2>{BUSINESS.credential}</h2>
+                    </div>
                   </div>
-                  <p className="hero-visual-kicker">Traditional wisdom, personal guidance</p>
-                  <div className="hero-quote refined-quote">
-                    <Quote size={24} />
-                    <p>Bringing positive change to people’s lives through thoughtful astrological guidance.</p>
+
+                  <p className="hero-credential-institute">{BUSINESS.institute}</p>
+
+                  <div className="hero-credential-quote">
+                    <Quote size={21} />
+                    <p>“My aim is to bring positive change to someone’s life through astrological guidance.”</p>
                   </div>
-                  <div className="credential-strip compact-credential">
-                    <strong>{BUSINESS.credential}</strong>
-                    <span>{BUSINESS.institute}</span>
-                    <span>Grade {BUSINESS.grade}</span>
+
+                  <div className="hero-credential-meta">
+                    <span><BadgeCheck size={17} /> Grade {BUSINESS.grade}</span>
+                    <span><Globe size={17} /> Online consultations</span>
+                    <span><MessageCircle size={17} /> Hindi & English</span>
                   </div>
                 </Card>
               </motion.div>
@@ -296,7 +300,7 @@ export default function App() {
                   const Icon = item.icon;
                   return (
                     <motion.div key={item.title} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.15 }} transition={{ duration: 0.4, delay: index * 0.04 }}>
-                      <Card className={`service-card ${item.title === "Vastu Guidance" ? "service-featured" : ""}`}>
+                      <Card className="service-card">
                         <div className="icon-box"><Icon size={21} /></div>
                         <h3>{item.title}</h3>
                         <p>{item.description}</p>
