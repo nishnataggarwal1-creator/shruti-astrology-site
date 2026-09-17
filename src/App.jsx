@@ -261,15 +261,13 @@ export default function App() {
               </motion.div>
 
               <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.55, delay: 0.08 }}>
-                <Card className="hero-card">
-                  <div className="hero-logo-wrap">
-                    <img src={logo} alt="Vedic Astrology by Shruti" className="hero-logo" />
-                  </div>
-                  <div className="hero-quote">
-                    <Quote size={24} />
+                <Card className="hero-card compact-hero-card">
+                  <div className="hero-card-mark" aria-hidden="true"><Sparkles size={22} /></div>
+                  <div className="hero-quote compact-hero-quote">
+                    <Quote size={22} />
                     <p>Bringing positive change to people’s lives through thoughtful astrological guidance.</p>
                   </div>
-                  <div className="credential-strip">
+                  <div className="credential-strip compact-credential-strip">
                     <strong>{BUSINESS.credential}</strong>
                     <span>{BUSINESS.institute}</span>
                     <span>Grade {BUSINESS.grade}</span>
