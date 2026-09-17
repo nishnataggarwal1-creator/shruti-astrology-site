@@ -112,28 +112,6 @@ const WHY_SHRUTI = [
   },
 ];
 
-const FAQS = [
-  {
-    q: "How do I book a consultation?",
-    a: "Use the booking form or contact Shruti on WhatsApp. Your concern and consultation type can be discussed before the appointment is confirmed.",
-  },
-  {
-    q: "Are consultations available online?",
-    a: "Yes. Online consultation is the primary option and appointment details are coordinated directly on WhatsApp.",
-  },
-  {
-    q: "What can I seek guidance about?",
-    a: "Common areas include Kundli analysis, career, profession, business, marriage, relationships, family, children, finance, Vastu, health-related astrological guidance, and personalized remedies.",
-  },
-  {
-    q: "Are remedies personalized?",
-    a: "Yes. Where remedies are relevant, they are recommended according to the individual concern and consultation context rather than as a one-size-fits-all suggestion.",
-  },
-  {
-    q: "Can I consult in Hindi?",
-    a: "Yes. Consultations are available in both Hindi and English.",
-  },
-];
 
 const FORM_SERVICES = [
   "Kundli & Life Guidance",
@@ -306,7 +284,6 @@ export default function App() {
               <a href="#services">Services</a>
               <a href="#about">About</a>
               <a href="#reviews">Reviews</a>
-              <a href="#faq">FAQ</a>
             </nav>
 
             <a href="#appointment" className="btn btn-primary header-book"><span className="book-full">Book Consultation</span><span className="book-short">Book</span></a>
@@ -316,7 +293,6 @@ export default function App() {
               <a href="#services">Services</a>
               <a href="#reviews">Reviews</a>
               <a href="#leave-review">Leave Review</a>
-              <a href="#faq">FAQ</a>
             </div>
           </nav>
         </header>
@@ -545,20 +521,6 @@ export default function App() {
                     {reviewStatus ? <p className="review-status" role="status">{reviewStatus}</p> : null}
                   </form>
                 </Card>
-              </div>
-            </div>
-          </section>
-
-          <section id="faq" className="section section-light">
-            <div className="container">
-              <SectionTitle label="FAQ" title="Before you get in touch" align="center" />
-              <div className="faq-grid">
-                {FAQS.map((item) => (
-                  <Card key={item.q} className="faq-card">
-                    <h3>{item.q}</h3>
-                    <p>{item.a}</p>
-                  </Card>
-                ))}
               </div>
             </div>
           </section>
