@@ -227,7 +227,7 @@ export default function App() {
               <a href="#faq">FAQ</a>
             </nav>
 
-            <a href="#appointment" className="btn btn-primary header-book">Book Consultation</a>
+            <a href="#appointment" className="btn btn-primary header-book"><span className="book-full">Book Consultation</span><span className="book-short">Book</span></a>
           </div>
         </header>
 
@@ -261,26 +261,18 @@ export default function App() {
               </motion.div>
 
               <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.55, delay: 0.08 }}>
-                <Card className="hero-credential-card">
-                  <div className="hero-credential-heading">
-                    <div className="hero-credential-icon"><GraduationCap size={24} /></div>
-                    <div>
-                      <p className="hero-credential-label">Formal qualification</p>
-                      <h2>{BUSINESS.credential}</h2>
-                    </div>
+                <Card className="hero-card">
+                  <div className="hero-logo-wrap">
+                    <img src={logo} alt="Vedic Astrology by Shruti" className="hero-logo" />
                   </div>
-
-                  <p className="hero-credential-institute">{BUSINESS.institute}</p>
-
-                  <div className="hero-credential-quote">
-                    <Quote size={21} />
-                    <p>“My aim is to bring positive change to someone’s life through astrological guidance.”</p>
+                  <div className="hero-quote">
+                    <Quote size={24} />
+                    <p>Bringing positive change to people’s lives through thoughtful astrological guidance.</p>
                   </div>
-
-                  <div className="hero-credential-meta">
-                    <span><BadgeCheck size={17} /> Grade {BUSINESS.grade}</span>
-                    <span><Globe size={17} /> Online consultations</span>
-                    <span><MessageCircle size={17} /> Hindi & English</span>
+                  <div className="credential-strip">
+                    <strong>{BUSINESS.credential}</strong>
+                    <span>{BUSINESS.institute}</span>
+                    <span>Grade {BUSINESS.grade}</span>
                   </div>
                 </Card>
               </motion.div>
