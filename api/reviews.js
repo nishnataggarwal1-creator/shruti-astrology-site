@@ -84,10 +84,16 @@ async function createModerationToken({ url, secret, reviewId }) {
 
 async function sendModerationEmail({ req, reviewId, token, category, reviewText, contactType, contact }) {
   const resendKey = process.env.RESEND_API_KEY;
-  const adminEmail = process.env.REVIEW_ADMIN_EMAIL;
+  const adminEmailSetting = process.env.REVIEW_ADMIN_EMAILS || process.env.REVIEW_ADMIN_EMAIL || "";
+  const adminEmails = [...new Set(
+    adminEmailSetting
+      .split(",")
+      .map((email) => email.trim())
+      .filter(Boolean)
+  )];
   const fromEmail = process.env.RESEND_FROM_EMAIL;
 
-  if (!resendKey || !adminEmail || !fromEmail) {
+  if (!resendKey || adminEmails.length === 0 || !fromEmail) {
     console.error("Review notification email configuration is incomplete");
     return false;
   }
@@ -130,27 +136,33 @@ async function sendModerationEmail({ req, reviewId, token, category, reviewText,
     "The links open a confirmation page first and expire after 7 days.",
   ].join("\n");
 
-  const response = await fetch("https://api.resend.com/emails", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${resendKey}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      from: `Vedic Astrology by Shruti <${fromEmail}>`,
-      to: [adminEmail],
-      subject: `New review awaiting approval — ${category}`,
-      html,
-      text,
-    }),
-  });
+  const results = await Promise.all(
+    adminEmails.map(async (adminEmail) => {
+      const response = await fetch("https://api.resend.com/emails", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${resendKey}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          from: `Vedic Astrology by Shruti <${fromEmail}>`,
+          to: [adminEmail],
+          subject: `New review awaiting approval — ${category}`,
+          html,
+          text,
+        }),
+      });
 
-  if (!response.ok) {
-    console.error("Resend notification failed:", response.status, await response.text());
-    return false;
-  }
+      if (!response.ok) {
+        console.error(`Resend notification failed for ${adminEmail}:`, response.status, await response.text());
+        return false;
+      }
 
-  return true;
+      return true;
+    })
+  );
+
+  return results.every(Boolean);
 }
 
 export default async function handler(req, res) {
