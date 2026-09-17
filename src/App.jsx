@@ -89,27 +89,27 @@ const WHY_SHRUTI = [
   {
     icon: GraduationCap,
     title: "Formal Qualification",
-    text: "Master in Astrology from Shree Maharshi College of Vedic Astrology, Grade A+.",
+    text: "Master in Astrology, Shree Maharshi College of Vedic Astrology, Grade A+.",
   },
   {
     icon: BadgeCheck,
     title: "Personalized Guidance",
-    text: "Consultations are shaped around the individual chart, current concerns, and the questions that matter most.",
+    text: "Guidance shaped around your chart, current concerns, and priorities.",
   },
   {
     icon: Sparkles,
     title: "Practical Remedies",
-    text: "Personalized remedies may be recommended where relevant to support positive change and clearer direction.",
+    text: "Personalized remedies may be suggested where relevant.",
   },
   {
     icon: Globe,
-    title: "Convenient Online Consultation",
-    text: "Consult remotely and coordinate appointment details directly through WhatsApp.",
+    title: "Online Consultation",
+    text: "Consult remotely and coordinate details directly on WhatsApp.",
   },
   {
     icon: MessageCircle,
     title: "Hindi & English",
-    text: "Consultations can be conducted comfortably in Hindi or English.",
+    text: "Consult comfortably in either Hindi or English.",
   },
 ];
 
@@ -261,15 +261,19 @@ export default function App() {
               </motion.div>
 
               <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.55, delay: 0.08 }}>
-                <Card className="hero-card">
-                  <div className="hero-logo-wrap">
-                    <img src={logo} alt="Vedic Astrology by Shruti" className="hero-logo" />
+                <Card className="hero-visual-card">
+                  <div className="celestial-mark" aria-hidden="true">
+                    <span className="orbit orbit-one" />
+                    <span className="orbit orbit-two" />
+                    <span className="orbit orbit-three" />
+                    <Sparkles size={32} />
                   </div>
-                  <div className="hero-quote">
-                    <Quote size={26} />
+                  <p className="hero-visual-kicker">Traditional wisdom, personal guidance</p>
+                  <div className="hero-quote refined-quote">
+                    <Quote size={24} />
                     <p>Bringing positive change to people’s lives through thoughtful astrological guidance.</p>
                   </div>
-                  <div className="credential-strip">
+                  <div className="credential-strip compact-credential">
                     <strong>{BUSINESS.credential}</strong>
                     <span>{BUSINESS.institute}</span>
                     <span>Grade {BUSINESS.grade}</span>
@@ -430,7 +434,7 @@ export default function App() {
                     "Contact Shruti on WhatsApp or use the enquiry form.",
                     "Briefly share the area you would like guidance on.",
                     "Confirm the consultation timing and details directly with Shruti.",
-                    "Attend your personalized consultation online.",
+                    "Attend your personalized consultation.",
                   ].map((step, index) => (
                     <div key={step} className="step-item">
                       <span className="step-number">{String(index + 1).padStart(2, "0")}</span>
