@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import {
   MessageCircle,
@@ -165,14 +165,21 @@ function Card({ className = "", children }) {
 export default function App() {
   const [service, setService] = useState("");
   const [form, setForm] = useState({ name: "", phone: "", message: "" });
+  const [reviews, setReviews] = useState([]);
+  const [reviewsLoading, setReviewsLoading] = useState(true);
+  const [reviewForm, setReviewForm] = useState({
+    category: "",
+    reviewText: "",
+    contactType: "whatsapp",
+    contact: "",
+  });
+  const [reviewSubmitting, setReviewSubmitting] = useState(false);
+  const [reviewStatus, setReviewStatus] = useState("");
 
   const quickWhatsappUrl = `https://wa.me/${BUSINESS.whatsapp}?text=${encodeURIComponent(
     "Hello, I would like to book a consultation with Shruti."
   )}`;
 
-  const reviewWhatsappUrl = `https://wa.me/${BUSINESS.whatsapp}?text=${encodeURIComponent(
-    "Hello, I would like to share feedback about my consultation."
-  )}`;
 
   const whatsappUrl = useMemo(() => {
     const parts = [
@@ -195,6 +202,55 @@ export default function App() {
       return;
     }
     window.open(whatsappUrl, "_blank", "noopener,noreferrer");
+  };
+
+  useEffect(() => {
+    let cancelled = false;
+    const loadReviews = async () => {
+      try {
+        const response = await fetch("/api/reviews");
+        if (!response.ok) throw new Error("Unable to load reviews");
+        const data = await response.json();
+        if (!cancelled) setReviews(Array.isArray(data.reviews) ? data.reviews : []);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        if (!cancelled) setReviewsLoading(false);
+      }
+    };
+    loadReviews();
+    return () => { cancelled = true; };
+  }, []);
+
+  const handleReviewChange = (key, value) => {
+    setReviewForm((prev) => ({ ...prev, [key]: value }));
+    if (reviewStatus) setReviewStatus("");
+  };
+
+  const handleReviewSubmit = async (e) => {
+    e.preventDefault();
+    if (!reviewForm.category || reviewForm.reviewText.trim().length < 20 || !reviewForm.contact.trim()) {
+      setReviewStatus("Please choose a category, write at least 20 characters, and add a private contact for verification.");
+      return;
+    }
+
+    setReviewSubmitting(true);
+    setReviewStatus("");
+    try {
+      const response = await fetch("/api/reviews", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(reviewForm),
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || "Unable to submit review");
+      setReviewForm({ category: "", reviewText: "", contactType: "whatsapp", contact: "" });
+      setReviewStatus("Thank you. Your review has been submitted for approval and will not appear publicly unless approved.");
+    } catch (error) {
+      setReviewStatus(error.message || "Unable to submit your review right now. Please try again.");
+    } finally {
+      setReviewSubmitting(false);
+    }
   };
 
   const schema = {
@@ -382,22 +438,72 @@ export default function App() {
           </section>
 
           <section id="reviews" className="section reviews-section">
-            <div className="container reviews-layout">
-              <div>
-                <SectionTitle
-                  label="Client Experiences"
-                  title="Real feedback, shared privately"
-                  text="Client names are not displayed. Genuine testimonials will be added here only with permission and may identify the consultation category without revealing personal details."
-                />
+            <div className="container">
+              <SectionTitle
+                label="Client Experiences"
+                title="Approved client feedback"
+                text="Client names are never displayed. Only reviews approved by Shruti are published, with the consultation category shown for context."
+                align="center"
+              />
+
+              {!reviewsLoading && reviews.length > 0 ? (
+                <div className="testimonials-grid">
+                  {reviews.map((review) => (
+                    <Card className="testimonial-card" key={review.id}>
+                      <Quote size={24} />
+                      <p className="testimonial-text">“{review.review_text}”</p>
+                      <p className="testimonial-category">Client Testimonial — {review.category}</p>
+                    </Card>
+                  ))}
+                </div>
+              ) : null}
+
+              <div className="review-submit-layout">
+                <div className="review-privacy-copy">
+                  <p className="section-label">Share Your Experience</p>
+                  <h3>Have you consulted with Shruti?</h3>
+                  <p>Submit your feedback here. Your name is not requested and your verification contact is kept private. The review remains pending until it is approved.</p>
+                  <div className="review-privacy-points">
+                    <div><ShieldCheck size={18} /> No client name displayed</div>
+                    <div><BadgeCheck size={18} /> Published only after approval</div>
+                    <div><MessageCircle size={18} /> Contact used only for verification</div>
+                  </div>
+                </div>
+
+                <Card className="review-form-card">
+                  <form className="review-form" onSubmit={handleReviewSubmit}>
+                    <select value={reviewForm.category} onChange={(e) => handleReviewChange("category", e.target.value)} aria-label="Consultation category">
+                      <option value="">Consultation category</option>
+                      {FORM_SERVICES.map((item) => <option key={item} value={item}>{item}</option>)}
+                    </select>
+                    <textarea
+                      rows={5}
+                      maxLength={2000}
+                      value={reviewForm.reviewText}
+                      onChange={(e) => handleReviewChange("reviewText", e.target.value)}
+                      placeholder="Share your experience (minimum 20 characters)"
+                      aria-label="Review"
+                    />
+                    <div className="two-col review-contact-row">
+                      <select value={reviewForm.contactType} onChange={(e) => handleReviewChange("contactType", e.target.value)} aria-label="Contact type">
+                        <option value="whatsapp">WhatsApp</option>
+                        <option value="email">Email</option>
+                      </select>
+                      <input
+                        value={reviewForm.contact}
+                        onChange={(e) => handleReviewChange("contact", e.target.value)}
+                        placeholder={reviewForm.contactType === "email" ? "Email for verification" : "WhatsApp number for verification"}
+                        aria-label="Private verification contact"
+                      />
+                    </div>
+                    <p className="review-private-note">Your contact information is private and is not included with the public testimonial.</p>
+                    <button type="submit" className="btn btn-primary wide-btn" disabled={reviewSubmitting}>
+                      <MessageCircle size={17} /> {reviewSubmitting ? "Submitting…" : "Submit Review for Approval"}
+                    </button>
+                    {reviewStatus ? <p className="review-status" role="status">{reviewStatus}</p> : null}
+                  </form>
+                </Card>
               </div>
-              <Card className="review-invite">
-                <Quote size={28} />
-                <h3>Have you consulted with Shruti?</h3>
-                <p>You can share your experience privately on WhatsApp. Feedback is never published without approval.</p>
-                <a href={reviewWhatsappUrl} target="_blank" rel="noreferrer" className="btn btn-secondary">
-                  <MessageCircle size={17} /> Share Your Experience
-                </a>
-              </Card>
             </div>
           </section>
 
