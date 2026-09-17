@@ -29,13 +29,21 @@ export default async function handler(req, res) {
     const { url, publishable, secret } = getConfig();
 
     if (req.method === "GET") {
-      const endpoint = `${url}/rest/v1/reviews?select=id,category,review_text,approved_at&status=eq.approved&order=approved_at.desc.nullslast,submitted_at.desc&limit=12`;
+      const requestedLimit = Number.parseInt(String(req.query?.limit || "6"), 10);
+      const requestedOffset = Number.parseInt(String(req.query?.offset || "0"), 10);
+      const limit = Number.isFinite(requestedLimit) ? Math.min(Math.max(requestedLimit, 1), 12) : 6;
+      const offset = Number.isFinite(requestedOffset) ? Math.max(requestedOffset, 0) : 0;
+      const fetchLimit = limit + 1;
+
+      const endpoint = `${url}/rest/v1/reviews?select=id,category,review_text,approved_at&status=eq.approved&order=approved_at.desc.nullslast,submitted_at.desc&limit=${fetchLimit}&offset=${offset}`;
       const response = await fetch(endpoint, {
         headers: { apikey: publishable },
       });
       if (!response.ok) throw new Error("Could not load approved reviews");
-      const reviews = await response.json();
-      return json(res, 200, { reviews });
+      const rows = await response.json();
+      const hasMore = Array.isArray(rows) && rows.length > limit;
+      const reviews = Array.isArray(rows) ? rows.slice(0, limit) : [];
+      return json(res, 200, { reviews, hasMore });
     }
 
     if (req.method === "POST") {
@@ -79,4 +87,3 @@ export default async function handler(req, res) {
     return json(res, 500, { error: "Server error. Please try again later." });
   }
 }
-
