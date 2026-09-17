@@ -162,11 +162,15 @@ function Card({ className = "", children }) {
   return <div className={`card ${className}`.trim()}>{children}</div>;
 }
 
+const REVIEWS_PAGE_SIZE = 6;
+
 export default function App() {
   const [service, setService] = useState("");
   const [form, setForm] = useState({ name: "", phone: "", message: "" });
   const [reviews, setReviews] = useState([]);
   const [reviewsLoading, setReviewsLoading] = useState(true);
+  const [reviewsLoadingMore, setReviewsLoadingMore] = useState(false);
+  const [reviewsHasMore, setReviewsHasMore] = useState(false);
   const [reviewForm, setReviewForm] = useState({
     category: "",
     reviewText: "",
@@ -208,10 +212,13 @@ export default function App() {
     let cancelled = false;
     const loadReviews = async () => {
       try {
-        const response = await fetch("/api/reviews");
+        const response = await fetch(`/api/reviews?limit=${REVIEWS_PAGE_SIZE}&offset=0`);
         if (!response.ok) throw new Error("Unable to load reviews");
         const data = await response.json();
-        if (!cancelled) setReviews(Array.isArray(data.reviews) ? data.reviews : []);
+        if (!cancelled) {
+          setReviews(Array.isArray(data.reviews) ? data.reviews : []);
+          setReviewsHasMore(Boolean(data.hasMore));
+        }
       } catch (error) {
         console.error(error);
       } finally {
@@ -221,6 +228,26 @@ export default function App() {
     loadReviews();
     return () => { cancelled = true; };
   }, []);
+
+  const handleLoadMoreReviews = async () => {
+    if (reviewsLoadingMore || !reviewsHasMore) return;
+    setReviewsLoadingMore(true);
+    try {
+      const response = await fetch(`/api/reviews?limit=${REVIEWS_PAGE_SIZE}&offset=${reviews.length}`);
+      if (!response.ok) throw new Error("Unable to load more reviews");
+      const data = await response.json();
+      const nextReviews = Array.isArray(data.reviews) ? data.reviews : [];
+      setReviews((current) => {
+        const seen = new Set(current.map((review) => review.id));
+        return [...current, ...nextReviews.filter((review) => !seen.has(review.id))];
+      });
+      setReviewsHasMore(Boolean(data.hasMore));
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setReviewsLoadingMore(false);
+    }
+  };
 
   const handleReviewChange = (key, value) => {
     setReviewForm((prev) => ({ ...prev, [key]: value }));
@@ -441,21 +468,35 @@ export default function App() {
             <div className="container">
               <SectionTitle
                 label="Client Experiences"
-                title="Approved client feedback"
-                text="Client names are never displayed. Only reviews approved by Shruti are published, with the consultation category shown for context."
+                title="Client experiences"
+                text="Client names are never displayed. The consultation category is shown for context."
                 align="center"
               />
 
               {!reviewsLoading && reviews.length > 0 ? (
-                <div className="testimonials-grid">
-                  {reviews.map((review) => (
-                    <Card className="testimonial-card" key={review.id}>
-                      <Quote size={24} />
-                      <p className="testimonial-text">“{review.review_text}”</p>
-                      <p className="testimonial-category">Client Testimonial — {review.category}</p>
-                    </Card>
-                  ))}
-                </div>
+                <>
+                  <div className="testimonials-grid">
+                    {reviews.map((review) => (
+                      <Card className="testimonial-card" key={review.id}>
+                        <Quote size={24} />
+                        <p className="testimonial-text">“{review.review_text}”</p>
+                        <p className="testimonial-category">Client Testimonial — {review.category}</p>
+                      </Card>
+                    ))}
+                  </div>
+                  {reviewsHasMore ? (
+                    <div className="reviews-load-more">
+                      <button
+                        type="button"
+                        className="btn btn-secondary"
+                        onClick={handleLoadMoreReviews}
+                        disabled={reviewsLoadingMore}
+                      >
+                        {reviewsLoadingMore ? "Loading…" : "Load More Reviews"}
+                      </button>
+                    </div>
+                  ) : null}
+                </>
               ) : null}
 
               <div className="review-submit-layout">
