@@ -39,11 +39,12 @@ function sha256(value) {
   return createHash("sha256").update(value).digest("hex");
 }
 
-function getBaseUrl(req) {
-  const forwardedProto = String(req.headers["x-forwarded-proto"] || "https").split(",")[0].trim();
-  const host = String(req.headers["x-forwarded-host"] || req.headers.host || "vedicastrologybyshruti.com").split(",")[0].trim();
-  const proto = host.includes("localhost") ? forwardedProto || "http" : "https";
-  return `${proto}://${host}`;
+function getSiteUrl() {
+  const siteUrl = String(process.env.SITE_URL || "").trim().replace(/\/+$/, "");
+  if (!siteUrl || !siteUrl.startsWith("https://")) {
+    throw new Error("SITE_URL must be configured with an https:// URL");
+  }
+  return siteUrl;
 }
 
 function normalizeRpcUuid(payload) {
@@ -82,7 +83,7 @@ async function createModerationToken({ url, secret, reviewId }) {
   return rawToken;
 }
 
-async function sendModerationEmail({ req, reviewId, token, category, reviewText, contactType, contact }) {
+async function sendModerationEmail({ reviewId, token, category, reviewText, contactType, contact }) {
   const resendKey = process.env.RESEND_API_KEY;
   const adminEmailSetting = process.env.REVIEW_ADMIN_EMAILS || process.env.REVIEW_ADMIN_EMAIL || "";
   const adminEmails = [...new Set(
@@ -98,9 +99,9 @@ async function sendModerationEmail({ req, reviewId, token, category, reviewText,
     return false;
   }
 
-  const baseUrl = getBaseUrl(req);
-  const approveUrl = `${baseUrl}/api/review-moderate?review=${encodeURIComponent(reviewId)}&action=approve&token=${encodeURIComponent(token)}`;
-  const rejectUrl = `${baseUrl}/api/review-moderate?review=${encodeURIComponent(reviewId)}&action=reject&token=${encodeURIComponent(token)}`;
+  const siteUrl = getSiteUrl();
+  const approveUrl = `${siteUrl}/api/review-moderate?review=${encodeURIComponent(reviewId)}&action=approve&token=${encodeURIComponent(token)}`;
+  const rejectUrl = `${siteUrl}/api/review-moderate?review=${encodeURIComponent(reviewId)}&action=reject&token=${encodeURIComponent(token)}`;
 
   const safeCategory = escapeHtml(category);
   const safeReview = escapeHtml(reviewText).replaceAll("\n", "<br>");
@@ -233,7 +234,6 @@ export default async function handler(req, res) {
       try {
         const token = await createModerationToken({ url, secret, reviewId });
         notificationSent = await sendModerationEmail({
-          req,
           reviewId,
           token,
           category: cleanCategory,
