@@ -167,3 +167,25 @@ h1{font-size:clamp(2.75rem,4vw,4.1rem);line-height:1.02;letter-spacing:-.04em;ma
   .compact-hero-card{padding:20px 18px}
   .hero-card-mark{width:38px;height:38px}
 }
+
+/* Update 7: moderated review submission + approved testimonials */
+.testimonials-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:32px}
+.testimonial-card{padding:24px;min-height:190px;display:flex;flex-direction:column}
+.testimonial-card>svg{color:var(--orange);margin-bottom:14px}
+.testimonial-text{font-family:Georgia,"Times New Roman",serif;font-size:1.08rem;line-height:1.6;margin:0;color:var(--ink)}
+.testimonial-category{margin:auto 0 0;padding-top:18px;color:var(--orange-dark);font-weight:700;font-size:.86rem}
+.review-submit-layout{display:grid;grid-template-columns:.82fr 1.18fr;gap:34px;align-items:center;margin-top:34px}
+.review-privacy-copy h3{font-family:Georgia,"Times New Roman",serif;font-size:2rem;margin:5px 0 12px}
+.review-privacy-copy>p:not(.section-label){color:var(--muted);line-height:1.72;max-width:540px}
+.review-privacy-points{display:grid;gap:10px;margin-top:20px}
+.review-privacy-points div{display:flex;gap:9px;align-items:center;color:var(--muted);font-size:.92rem}
+.review-privacy-points svg{color:var(--orange);flex:0 0 auto}
+.review-form-card{padding:26px;background:rgba(255,253,249,.95)}
+.review-form{display:grid;gap:13px}
+.review-form input,.review-form textarea,.review-form select{width:100%;border:1px solid var(--line);border-radius:15px;background:#fffaf5;color:var(--ink);padding:14px 15px;outline:none}
+.review-form input:focus,.review-form textarea:focus,.review-form select:focus{border-color:rgba(216,102,34,.58);box-shadow:0 0 0 3px rgba(216,102,34,.08)}
+.review-private-note{font-size:.82rem;line-height:1.5;color:var(--muted);margin:-2px 2px 1px}
+.review-status{font-size:.9rem;line-height:1.5;color:var(--orange-dark);margin:0;text-align:center}
+.review-form button:disabled{opacity:.65;cursor:not-allowed}
+@media(max-width:900px){.testimonials-grid{grid-template-columns:1fr 1fr}.review-submit-layout{grid-template-columns:1fr}}
+@media(max-width:760px){.testimonials-grid{grid-template-columns:1fr}.review-submit-layout{gap:24px}.review-privacy-copy h3{font-size:1.65rem}.review-form-card{padding:20px}.review-contact-row{grid-template-columns:1fr}}
