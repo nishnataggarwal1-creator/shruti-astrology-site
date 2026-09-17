@@ -3,7 +3,6 @@ import { motion } from "framer-motion";
 import {
   MessageCircle,
   Globe,
-  ShieldCheck,
   Sparkles,
   CheckCircle2,
   ChevronRight,
@@ -272,7 +271,7 @@ export default function App() {
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || "Unable to submit review");
       setReviewForm({ category: "", reviewText: "", contactType: "whatsapp", contact: "" });
-      setReviewStatus("Thank you. Your review has been submitted for approval and will not appear publicly unless approved.");
+      setReviewStatus("Thank you. Your review has been submitted and is awaiting review.");
     } catch (error) {
       setReviewStatus(error.message || "Unable to submit your review right now. Please try again.");
     } finally {
@@ -312,6 +311,14 @@ export default function App() {
 
             <a href="#appointment" className="btn btn-primary header-book"><span className="book-full">Book Consultation</span><span className="book-short">Book</span></a>
           </div>
+          <nav className="mobile-nav" aria-label="Mobile navigation">
+            <div className="container mobile-nav-inner">
+              <a href="#services">Services</a>
+              <a href="#reviews">Reviews</a>
+              <a href="#leave-review">Leave Review</a>
+              <a href="#faq">FAQ</a>
+            </div>
+          </nav>
         </header>
 
         <main id="top">
@@ -499,16 +506,10 @@ export default function App() {
                 </>
               ) : null}
 
-              <div className="review-submit-layout">
+              <div id="leave-review" className="review-submit-layout">
                 <div className="review-privacy-copy">
                   <p className="section-label">Share Your Experience</p>
                   <h3>Have you consulted with Shruti?</h3>
-                  <p>Submit your feedback here. Your name is not requested and your verification contact is kept private. The review remains pending until it is approved.</p>
-                  <div className="review-privacy-points">
-                    <div><ShieldCheck size={18} /> No client name displayed</div>
-                    <div><BadgeCheck size={18} /> Published only after approval</div>
-                    <div><MessageCircle size={18} /> Contact used only for verification</div>
-                  </div>
                 </div>
 
                 <Card className="review-form-card">
