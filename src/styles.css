@@ -189,3 +189,8 @@ h1{font-size:clamp(2.75rem,4vw,4.1rem);line-height:1.02;letter-spacing:-.04em;ma
 .review-form button:disabled{opacity:.65;cursor:not-allowed}
 @media(max-width:900px){.testimonials-grid{grid-template-columns:1fr 1fr}.review-submit-layout{grid-template-columns:1fr}}
 @media(max-width:760px){.testimonials-grid{grid-template-columns:1fr}.review-submit-layout{gap:24px}.review-privacy-copy h3{font-size:1.65rem}.review-form-card{padding:20px}.review-contact-row{grid-template-columns:1fr}}
+/* Update 7.1: scalable testimonial pagination */
+.reviews-load-more{display:flex;justify-content:center;margin:22px 0 4px}
+.reviews-load-more .btn{min-width:190px}
+.reviews-load-more .btn:disabled{opacity:.65;cursor:not-allowed}
+
