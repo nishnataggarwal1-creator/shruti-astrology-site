@@ -1,3 +1,5 @@
+import { createHash, randomBytes } from "node:crypto";
+
 const ALLOWED_CATEGORIES = new Set([
   "Kundli & Life Guidance",
   "Career & Business",
@@ -24,6 +26,133 @@ function getConfig() {
   return { url, publishable, secret };
 }
 
+function escapeHtml(value) {
+  return String(value ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
+function sha256(value) {
+  return createHash("sha256").update(value).digest("hex");
+}
+
+function getBaseUrl(req) {
+  const forwardedProto = String(req.headers["x-forwarded-proto"] || "https").split(",")[0].trim();
+  const host = String(req.headers["x-forwarded-host"] || req.headers.host || "vedicastrologybyshruti.com").split(",")[0].trim();
+  const proto = host.includes("localhost") ? forwardedProto || "http" : "https";
+  return `${proto}://${host}`;
+}
+
+function normalizeRpcUuid(payload) {
+  if (typeof payload === "string") return payload;
+  if (Array.isArray(payload) && typeof payload[0] === "string") return payload[0];
+  if (payload && typeof payload === "object") {
+    if (typeof payload.submit_review === "string") return payload.submit_review;
+    if (typeof payload.id === "string") return payload.id;
+  }
+  return "";
+}
+
+async function createModerationToken({ url, secret, reviewId }) {
+  const rawToken = randomBytes(32).toString("hex");
+  const tokenHash = sha256(rawToken);
+  const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString();
+
+  const response = await fetch(`${url}/rest/v1/review_moderation_tokens`, {
+    method: "POST",
+    headers: {
+      apikey: secret,
+      "Content-Type": "application/json",
+      Prefer: "return=minimal",
+    },
+    body: JSON.stringify({
+      review_id: reviewId,
+      token_hash: tokenHash,
+      expires_at: expiresAt,
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error(`Could not create moderation token (${response.status}): ${await response.text()}`);
+  }
+
+  return rawToken;
+}
+
+async function sendModerationEmail({ req, reviewId, token, category, reviewText, contactType, contact }) {
+  const resendKey = process.env.RESEND_API_KEY;
+  const adminEmail = process.env.REVIEW_ADMIN_EMAIL;
+  const fromEmail = process.env.RESEND_FROM_EMAIL;
+
+  if (!resendKey || !adminEmail || !fromEmail) {
+    console.error("Review notification email configuration is incomplete");
+    return false;
+  }
+
+  const baseUrl = getBaseUrl(req);
+  const approveUrl = `${baseUrl}/api/review-moderate?review=${encodeURIComponent(reviewId)}&action=approve&token=${encodeURIComponent(token)}`;
+  const rejectUrl = `${baseUrl}/api/review-moderate?review=${encodeURIComponent(reviewId)}&action=reject&token=${encodeURIComponent(token)}`;
+
+  const safeCategory = escapeHtml(category);
+  const safeReview = escapeHtml(reviewText).replaceAll("\n", "<br>");
+  const safeContactType = escapeHtml(contactType === "email" ? "Email" : "WhatsApp");
+  const safeContact = escapeHtml(contact);
+
+  const html = `
+    <div style="font-family:Arial,sans-serif;max-width:640px;margin:0 auto;color:#35251e;line-height:1.55">
+      <h2 style="margin-bottom:6px">New review awaiting approval</h2>
+      <p style="margin-top:0;color:#765f51">Vedic Astrology by Shruti</p>
+      <div style="border:1px solid #ead9cb;border-radius:14px;padding:20px;background:#fffaf5;margin:22px 0">
+        <p style="margin:0 0 10px"><strong>Category:</strong> ${safeCategory}</p>
+        <p style="margin:0 0 10px"><strong>Review:</strong><br>${safeReview}</p>
+        <p style="margin:0"><strong>Private verification contact (${safeContactType}):</strong><br>${safeContact}</p>
+      </div>
+      <p style="margin:0 0 18px">Choose an action below. The link opens a confirmation page first; merely opening the email does not publish or reject the review.</p>
+      <p>
+        <a href="${approveUrl}" style="display:inline-block;background:#c85116;color:white;text-decoration:none;padding:12px 18px;border-radius:999px;font-weight:700;margin-right:10px">Review & Approve</a>
+        <a href="${rejectUrl}" style="display:inline-block;background:#5a4438;color:white;text-decoration:none;padding:12px 18px;border-radius:999px;font-weight:700">Review & Reject</a>
+      </p>
+      <p style="font-size:12px;color:#8a7467;margin-top:28px">For security, these moderation links expire after 7 days and stop working after the review is handled.</p>
+    </div>`;
+
+  const text = [
+    "New review awaiting approval",
+    `Category: ${category}`,
+    `Review: ${reviewText}`,
+    `Private verification contact (${contactType}): ${contact}`,
+    "",
+    `Review & approve: ${approveUrl}`,
+    `Review & reject: ${rejectUrl}`,
+    "",
+    "The links open a confirmation page first and expire after 7 days.",
+  ].join("\n");
+
+  const response = await fetch("https://api.resend.com/emails", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${resendKey}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      from: `Vedic Astrology by Shruti <${fromEmail}>`,
+      to: [adminEmail],
+      subject: `New review awaiting approval — ${category}`,
+      html,
+      text,
+    }),
+  });
+
+  if (!response.ok) {
+    console.error("Resend notification failed:", response.status, await response.text());
+    return false;
+  }
+
+  return true;
+}
+
 export default async function handler(req, res) {
   try {
     const { url, publishable, secret } = getConfig();
@@ -47,7 +176,11 @@ export default async function handler(req, res) {
     }
 
     if (req.method === "POST") {
-      const { category, reviewText, contactType, contact } = req.body || {};
+      const { category, reviewText, contactType, contact, website } = req.body || {};
+
+      // Honeypot: real users never see/fill this field. Bots that do receive a generic success response.
+      if (String(website || "").trim()) return json(res, 201, { ok: true });
+
       const cleanCategory = String(category || "").trim();
       const cleanReview = String(reviewText || "").trim();
       const cleanContactType = String(contactType || "").trim().toLowerCase();
@@ -77,7 +210,31 @@ export default async function handler(req, res) {
         return json(res, 500, { error: "Unable to submit your review right now. Please try again." });
       }
 
-      return json(res, 201, { ok: true });
+      const rpcPayload = await response.json();
+      const reviewId = normalizeRpcUuid(rpcPayload);
+      if (!reviewId) {
+        console.error("Review was created but its ID could not be read from the RPC response");
+        return json(res, 201, { ok: true, notificationSent: false });
+      }
+
+      let notificationSent = false;
+      try {
+        const token = await createModerationToken({ url, secret, reviewId });
+        notificationSent = await sendModerationEmail({
+          req,
+          reviewId,
+          token,
+          category: cleanCategory,
+          reviewText: cleanReview,
+          contactType: cleanContactType,
+          contact: cleanContact,
+        });
+      } catch (notificationError) {
+        // Never lose a genuine review because email/token delivery has a temporary problem.
+        console.error("Review saved, but moderation notification setup failed:", notificationError);
+      }
+
+      return json(res, 201, { ok: true, notificationSent });
     }
 
     res.setHeader("Allow", "GET, POST");
