@@ -2,7 +2,6 @@ import React, { useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import {
   MessageCircle,
-  Mail,
   Globe,
   ShieldCheck,
   Sparkles,
@@ -29,7 +28,6 @@ const BUSINESS = {
   practitioner: "Shruti Aggarwal",
   city: "New Delhi",
   whatsapp: "919873154009",
-  email: "shrutiaggarwal691@gmail.com",
   languages: "Hindi & English",
   credential: "Master in Astrology",
   institute: "Shree Maharshi College of Vedic Astrology",
@@ -136,10 +134,6 @@ const FAQS = [
     q: "Can I consult in Hindi?",
     a: "Yes. Consultations are available in both Hindi and English.",
   },
-  {
-    q: "Can I meet Shruti in person?",
-    a: "In-person consultation may be possible only after prior discussion and confirmation on WhatsApp.",
-  },
 ];
 
 const FORM_SERVICES = [
@@ -170,7 +164,7 @@ function Card({ className = "", children }) {
 
 export default function App() {
   const [service, setService] = useState("");
-  const [form, setForm] = useState({ name: "", phone: "", email: "", message: "" });
+  const [form, setForm] = useState({ name: "", phone: "", message: "" });
 
   const quickWhatsappUrl = `https://wa.me/${BUSINESS.whatsapp}?text=${encodeURIComponent(
     "Hello, I would like to book a consultation with Shruti."
@@ -186,19 +180,10 @@ export default function App() {
       "",
       `Name: ${form.name || ""}`,
       `WhatsApp Number: ${form.phone || ""}`,
-      `Email: ${form.email || ""}`,
       `Service: ${service || ""}`,
       `Message: ${form.message || ""}`,
     ];
     return `https://wa.me/${BUSINESS.whatsapp}?text=${encodeURIComponent(parts.join("\n"))}`;
-  }, [form, service]);
-
-  const mailtoUrl = useMemo(() => {
-    const subject = encodeURIComponent(`Consultation Request - ${BUSINESS.practitioner}`);
-    const body = encodeURIComponent(
-      `Hello, I would like to request a consultation.\n\nName: ${form.name}\nWhatsApp Number: ${form.phone}\nEmail: ${form.email}\nService: ${service}\nMessage: ${form.message}`
-    );
-    return `mailto:${BUSINESS.email}?subject=${subject}&body=${body}`;
   }, [form, service]);
 
   const handleChange = (key, value) => setForm((prev) => ({ ...prev, [key]: value }));
@@ -311,7 +296,6 @@ export default function App() {
                         <div className="icon-box"><Icon size={21} /></div>
                         <h3>{item.title}</h3>
                         <p>{item.description}</p>
-                        <a href="#appointment" className="inline-link">Request consultation <ChevronRight size={16} /></a>
                       </Card>
                     </motion.div>
                   );
@@ -443,7 +427,7 @@ export default function App() {
                 />
                 <div className="steps">
                   {[
-                    "Contact Shruti on WhatsApp or send the enquiry form.",
+                    "Contact Shruti on WhatsApp or use the enquiry form.",
                     "Briefly share the area you would like guidance on.",
                     "Confirm the consultation timing and details directly with Shruti.",
                     "Attend your personalized consultation online.",
@@ -458,31 +442,23 @@ export default function App() {
 
               <Card className="form-card">
                 <h3>Consultation Enquiry</h3>
-                <p className="form-text">Complete the details below, then continue on WhatsApp or send the enquiry by email.</p>
+                <p className="form-text">Complete the details below, then continue on WhatsApp.</p>
                 <form onSubmit={handleSubmit} className="appointment-form">
                   <div className="two-col">
                     <input value={form.name} onChange={(e) => handleChange("name", e.target.value)} placeholder="Name" aria-label="Name" />
                     <input value={form.phone} onChange={(e) => handleChange("phone", e.target.value)} placeholder="WhatsApp number" aria-label="WhatsApp number" />
                   </div>
-                  <input type="email" value={form.email} onChange={(e) => handleChange("email", e.target.value)} placeholder="Email" aria-label="Email" />
                   <select value={service} onChange={(e) => setService(e.target.value)} aria-label="Service interested in">
                     <option value="">Service interested in</option>
                     {FORM_SERVICES.map((item) => <option key={item} value={item}>{item}</option>)}
                   </select>
                   <textarea rows={5} value={form.message} onChange={(e) => handleChange("message", e.target.value)} placeholder="How can Shruti help you?" aria-label="Message" />
                   <button type="submit" className="btn btn-primary wide-btn"><MessageCircle size={17} /> Continue on WhatsApp</button>
-                  <a href={mailtoUrl} className="btn btn-secondary wide-btn"><Mail size={17} /> Send Enquiry by Email</a>
                 </form>
               </Card>
             </div>
           </section>
         </main>
-
-        <div className="floating-cta">
-          <a href={quickWhatsappUrl} target="_blank" rel="noreferrer" className="btn btn-primary">
-            <MessageCircle size={17} /> Book Consultation
-          </a>
-        </div>
 
         <footer className="site-footer">
           <div className="container footer-inner">
