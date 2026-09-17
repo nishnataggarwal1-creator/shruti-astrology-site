@@ -290,9 +290,10 @@ export default function App() {
           </div>
           <nav className="mobile-nav" aria-label="Mobile navigation">
             <div className="container mobile-nav-inner">
+              <a href="#top">Home</a>
               <a href="#services">Services</a>
+              <a href="#about">About</a>
               <a href="#reviews">Reviews</a>
-              <a href="#leave-review">Leave Review</a>
             </div>
           </nav>
         </header>
