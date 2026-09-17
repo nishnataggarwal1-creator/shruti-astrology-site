@@ -3,10 +3,7 @@ import { motion } from "framer-motion";
 import {
   MessageCircle,
   Mail,
-  MapPin,
-  Clock3,
   Globe,
-  Star,
   ShieldCheck,
   Sparkles,
   CheckCircle2,
@@ -15,19 +12,24 @@ import {
   CalendarDays,
   BadgeCheck,
   GraduationCap,
+  BriefcaseBusiness,
+  Heart,
+  Users,
+  Landmark,
+  Activity,
+  Home,
+  ScrollText,
+  Quote,
 } from "lucide-react";
 import logo from "./assets/logo.png";
-import certificate from "./assets/certificate.jpg";
+import certificate from "./assets/certificate-clean.jpg";
 
 const BUSINESS = {
-  fullName: "Vedic Astrology by Shruti Aggarwal",
+  fullName: "Vedic Astrology by Shruti",
+  practitioner: "Shruti Aggarwal",
   city: "New Delhi",
-  region: "Delhi",
-  country: "India",
   whatsapp: "919873154009",
   email: "shrutiaggarwal691@gmail.com",
-  address: "New Delhi • Online consultations available",
-  hours: "Mon–Sat, 10:00 AM – 7:00 PM",
   languages: "Hindi & English",
   credential: "Master in Astrology",
   institute: "Shree Maharshi College of Vedic Astrology",
@@ -36,86 +38,125 @@ const BUSINESS = {
 
 const SERVICES = [
   {
-    title: "Personal Consultation",
-    subtitle: "व्यक्तिगत ज्योतिष परामर्श",
+    title: "Kundli & Life Guidance",
+    icon: ScrollText,
     description:
-      "One-to-one guidance for important life questions, emotional clarity, personal direction, and general astrological insight.",
+      "Personalized birth-chart guidance to understand important life themes, timing, strengths, challenges, and major decisions.",
   },
   {
-    title: "Marriage & Relationship Guidance",
-    subtitle: "विवाह और संबंध मार्गदर्शन",
+    title: "Career, Profession & Business",
+    icon: BriefcaseBusiness,
     description:
-      "Consultation for compatibility, relationship concerns, marriage-related questions, and practical guidance through Vedic astrology.",
+      "Astrological guidance for career direction, professional challenges, work decisions, business concerns, and growth-related matters.",
   },
   {
-    title: "Career & Work Guidance",
-    subtitle: "करियर और कार्य परामर्श",
+    title: "Marriage & Relationships",
+    icon: Heart,
     description:
-      "Astrology-based guidance for job decisions, work challenges, career planning, and future professional direction.",
+      "Guidance for relationship concerns, marriage-related questions, delays, compatibility, and family harmony.",
   },
   {
-    title: "Online Astrology Consultation",
-    subtitle: "ऑनलाइन ज्योतिष परामर्श",
+    title: "Children & Family",
+    icon: Users,
     description:
-      "Convenient consultation through WhatsApp and email for clients in New Delhi, across India, and internationally.",
+      "Guidance for child-related concerns, family matters, progeny questions, and career direction for children.",
+  },
+  {
+    title: "Finance & Stuck Matters",
+    icon: Landmark,
+    description:
+      "Astrological guidance around debt, stuck money, financial obstacles, and difficult matters requiring clearer direction.",
+  },
+  {
+    title: "Health-Related Guidance",
+    icon: Activity,
+    description:
+      "Astrological guidance concerning health-related matters, patterns, and periods as part of a wider life consultation.",
+  },
+  {
+    title: "Vastu Guidance",
+    icon: Home,
+    description:
+      "Vastu guidance for homes, workplaces, property-related concerns, and creating greater balance in your environment.",
+  },
+  {
+    title: "Personalized Remedies",
+    icon: Sparkles,
+    description:
+      "Practical, personalized remedies recommended according to the individual chart, concern, and consultation context.",
   },
 ];
 
-const BENEFITS = [
+const WHY_SHRUTI = [
   {
-    icon: ShieldCheck,
-    title: "Professional and respectful",
-    text: "Clear communication and a calm, structured consultation experience.",
-  },
-  {
-    icon: Globe,
-    title: "Hindi and English",
-    text: "Consultations available comfortably in both Hindi and English.",
+    icon: GraduationCap,
+    title: "Formal Qualification",
+    text: "Master in Astrology from Shree Maharshi College of Vedic Astrology, Grade A+.",
   },
   {
     icon: BadgeCheck,
-    title: "Trust-oriented brand",
-    text: "Positioned around Vedic astrology, credibility, and direct inquiry conversion.",
-  },
-];
-
-const REVIEWS = [
-  {
-    name: "Client Testimonial",
-    text: "The consultation was calm, clear, and very helpful. The guidance was easy to understand and felt practical.",
+    title: "Personalized Guidance",
+    text: "Consultations are shaped around the individual chart, current concerns, and the questions that matter most.",
   },
   {
-    name: "Online Consultation",
-    text: "Professional communication and a smooth appointment process. The consultation gave useful clarity on important personal questions.",
+    icon: Sparkles,
+    title: "Practical Remedies",
+    text: "Personalized remedies may be recommended where relevant to support positive change and clearer direction.",
   },
   {
-    name: "Relationship Guidance",
-    text: "A respectful and thoughtful experience. The online consultation was convenient and well organised.",
+    icon: Globe,
+    title: "Convenient Online Consultation",
+    text: "Consult remotely and coordinate appointment details directly through WhatsApp.",
+  },
+  {
+    icon: MessageCircle,
+    title: "Hindi & English",
+    text: "Consultations can be conducted comfortably in Hindi or English.",
   },
 ];
 
 const FAQS = [
   {
-    q: "How can I book an appointment?",
-    a: "Appointments can be requested through the website form, WhatsApp, or email.",
+    q: "How do I book a consultation?",
+    a: "Use the booking form or contact Shruti on WhatsApp. Your concern and consultation type can be discussed before the appointment is confirmed.",
   },
   {
-    q: "Is online consultation available?",
-    a: "Yes. Online consultation is available for clients in New Delhi, across India, and internationally.",
+    q: "Are consultations available online?",
+    a: "Yes. Online consultation is the primary option and appointment details are coordinated directly on WhatsApp.",
   },
   {
-    q: "क्या परामर्श हिंदी में उपलब्ध है?",
-    a: "हाँ, परामर्श हिंदी और English दोनों में उपलब्ध है.",
+    q: "What can I seek guidance about?",
+    a: "Common areas include Kundli analysis, career, profession, business, marriage, relationships, family, children, finance, Vastu, health-related astrological guidance, and personalized remedies.",
   },
   {
-    q: "What is the consultation fee?",
-    a: "The consultation fee is discussed after initial contact, depending on the nature of the consultation required.",
+    q: "Are remedies personalized?",
+    a: "Yes. Where remedies are relevant, they are recommended according to the individual concern and consultation context rather than as a one-size-fits-all suggestion.",
+  },
+  {
+    q: "Can I consult in Hindi?",
+    a: "Yes. Consultations are available in both Hindi and English.",
+  },
+  {
+    q: "Can I meet Shruti in person?",
+    a: "In-person consultation may be possible only after prior discussion and confirmation on WhatsApp.",
   },
 ];
 
-function SectionTitle({ label, title, text }) {
+const FORM_SERVICES = [
+  "Kundli & Life Guidance",
+  "Career & Business",
+  "Marriage & Relationships",
+  "Family & Children",
+  "Finance & Stuck Matters",
+  "Health-Related Astrological Guidance",
+  "Vastu",
+  "Personalized Remedies",
+  "Other",
+];
+
+function SectionTitle({ label, title, text, align = "left" }) {
   return (
-    <div className="section-title">
+    <div className={`section-title ${align === "center" ? "center" : ""}`}>
       <p className="section-label">{label}</p>
       <h2>{title}</h2>
       {text ? <p className="section-text">{text}</p> : null}
@@ -129,69 +170,55 @@ function Card({ className = "", children }) {
 
 export default function App() {
   const [service, setService] = useState("");
-  const [form, setForm] = useState({
-    name: "",
-    phone: "",
-    email: "",
-    date: "",
-    birthDetails: "",
-    message: "",
-  });
+  const [form, setForm] = useState({ name: "", phone: "", email: "", message: "" });
 
   const quickWhatsappUrl = `https://wa.me/${BUSINESS.whatsapp}?text=${encodeURIComponent(
-    "Hello, I would like to know more about Vedic Astrology consultation."
+    "Hello, I would like to book a consultation with Shruti."
+  )}`;
+
+  const reviewWhatsappUrl = `https://wa.me/${BUSINESS.whatsapp}?text=${encodeURIComponent(
+    "Hello, I would like to share feedback about my consultation."
   )}`;
 
   const whatsappUrl = useMemo(() => {
     const parts = [
-      "Hello, I would like to request an appointment.",
+      "Hello, I would like to request a consultation.",
       "",
       `Name: ${form.name || ""}`,
-      `Phone: ${form.phone || ""}`,
+      `WhatsApp Number: ${form.phone || ""}`,
       `Email: ${form.email || ""}`,
       `Service: ${service || ""}`,
-      `Preferred Date: ${form.date || ""}`,
-      `Birth Details: ${form.birthDetails || ""}`,
       `Message: ${form.message || ""}`,
     ];
-    return `https://wa.me/${BUSINESS.whatsapp}?text=${encodeURIComponent(parts.join("\\n"))}`;
+    return `https://wa.me/${BUSINESS.whatsapp}?text=${encodeURIComponent(parts.join("\n"))}`;
   }, [form, service]);
 
   const mailtoUrl = useMemo(() => {
-    const subject = encodeURIComponent(`Appointment Request - ${BUSINESS.fullName}`);
+    const subject = encodeURIComponent(`Consultation Request - ${BUSINESS.practitioner}`);
     const body = encodeURIComponent(
-      `Hello, I would like to request an appointment.\\n\\nName: ${form.name}\\nPhone: ${form.phone}\\nEmail: ${form.email}\\nService: ${service}\\nPreferred Date: ${form.date}\\nBirth Details: ${form.birthDetails}\\nMessage: ${form.message}`
+      `Hello, I would like to request a consultation.\n\nName: ${form.name}\nWhatsApp Number: ${form.phone}\nEmail: ${form.email}\nService: ${service}\nMessage: ${form.message}`
     );
     return `mailto:${BUSINESS.email}?subject=${subject}&body=${body}`;
   }, [form, service]);
 
-  const handleChange = (key, value) => {
-    setForm((prev) => ({ ...prev, [key]: value }));
-  };
+  const handleChange = (key, value) => setForm((prev) => ({ ...prev, [key]: value }));
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!form.name || !form.phone || !service) {
-      alert("Please enter your name, phone number, and select a service.");
+      alert("Please enter your name, WhatsApp number, and select a service.");
       return;
     }
-    window.open(whatsappUrl, "_blank");
+    window.open(whatsappUrl, "_blank", "noopener,noreferrer");
   };
 
   const schema = {
     "@context": "https://schema.org",
-    "@type": "LocalBusiness",
+    "@type": "ProfessionalService",
     name: BUSINESS.fullName,
-    description: `${BUSINESS.fullName} offers professional consultation in Hindi and English for relationship, marriage, career, and personal life guidance in New Delhi and online.`,
+    description:
+      "Vedic Astrology by Shruti offers personalized online consultations for Kundli, career, business, marriage, relationships, family, finance, Vastu, and remedies.",
     areaServed: ["New Delhi", "India"],
-    address: {
-      "@type": "PostalAddress",
-      addressLocality: BUSINESS.city,
-      addressRegion: BUSINESS.region,
-      addressCountry: BUSINESS.country,
-    },
-    email: BUSINESS.email,
-    priceRange: "Price discussed after contact",
     availableLanguage: ["Hindi", "English"],
   };
 
@@ -202,288 +229,199 @@ export default function App() {
       <div className="site">
         <header className="site-header">
           <div className="container header-inner">
-            <a href="#top" className="brand">
+            <a href="#top" className="brand" aria-label="Vedic Astrology by Shruti home">
               <img src={logo} alt="Vedic Astrology logo" className="brand-logo" />
-              <div>
-                <p className="brand-name">{BUSINESS.fullName}</p>
-                <p className="brand-sub">New Delhi & Online Consultation</p>
-              </div>
+              <span className="brand-title">Vedic Astrology by Shruti</span>
             </a>
 
-            <nav className="desktop-nav">
+            <nav className="desktop-nav" aria-label="Primary navigation">
+              <a href="#top">Home</a>
               <a href="#services">Services</a>
               <a href="#about">About</a>
-              <a href="#credentials">Credentials</a>
-              <a href="#reviews">Testimonials</a>
+              <a href="#reviews">Reviews</a>
               <a href="#faq">FAQ</a>
-              <a href="#contact">Contact</a>
             </nav>
 
-            <div className="header-actions">
-              <a href={quickWhatsappUrl} target="_blank" rel="noreferrer" className="btn btn-secondary">
-                <MessageCircle size={16} /> WhatsApp
-              </a>
-              <a href="#appointment" className="btn btn-primary">Request Appointment</a>
-            </div>
+            <a href="#appointment" className="btn btn-primary header-book">Book Consultation</a>
           </div>
         </header>
 
         <main id="top">
           <section className="hero">
             <div className="container hero-grid">
-              <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
+              <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.55 }}>
                 <div className="hero-pill">
-                  <Award size={16} /> {BUSINESS.credential} • Vedic Astrology • {BUSINESS.city}
+                  <Award size={16} /> {BUSINESS.credential} • {BUSINESS.institute}
                 </div>
-
-                <h1>Vedic astrology guidance for life’s important decisions.</h1>
-
+                <p className="eyebrow">Guidance • Clarity • Balance</p>
+                <h1>Personal Vedic Astrology guidance for life’s important decisions.</h1>
                 <p className="hero-lead">
-                  Vedic Astrology by Shruti Aggarwal offers professional consultation in Hindi and English for relationship, marriage, career, and personal life guidance in New Delhi and online.
-                </p>
-
-                <p className="hero-sub">
-                  हिंदी और English में Vedic Astrology consultation उपलब्ध है। अपॉइंटमेंट और consultation details के लिए WhatsApp या email के माध्यम से संपर्क करें।
+                  Personalized consultation with Shruti Aggarwal for Kundli, career, business, relationships, family, finance, Vastu, and important life concerns — with practical guidance and remedies where relevant.
                 </p>
 
                 <div className="hero-actions">
-                  <a href="#appointment" className="btn btn-primary btn-lg">
-                    <CalendarDays size={18} /> Book Consultation
+                  <a href={quickWhatsappUrl} target="_blank" rel="noreferrer" className="btn btn-primary btn-lg">
+                    <MessageCircle size={18} /> Book Consultation
                   </a>
-                  <a href={quickWhatsappUrl} target="_blank" rel="noreferrer" className="btn btn-secondary btn-lg">
-                    <MessageCircle size={18} /> Contact on WhatsApp
+                  <a href="#appointment" className="btn btn-secondary btn-lg">
+                    <CalendarDays size={18} /> Send Enquiry
                   </a>
                 </div>
 
                 <div className="hero-points">
+                  <div><CheckCircle2 size={16} /> Online Consultations</div>
                   <div><CheckCircle2 size={16} /> Hindi & English</div>
-                  <div><CheckCircle2 size={16} /> New Delhi & Online</div>
-                  <div><CheckCircle2 size={16} /> Price discussed after contact</div>
+                  <div><CheckCircle2 size={16} /> Personalized Guidance</div>
                 </div>
               </motion.div>
 
-              <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.1 }}>
+              <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.55, delay: 0.08 }}>
                 <Card className="hero-card">
                   <div className="hero-logo-wrap">
-                    <img src={logo} alt="Vedic Astrology logo" className="hero-logo" />
+                    <img src={logo} alt="Vedic Astrology by Shruti" className="hero-logo" />
                   </div>
-                  <h3>{BUSINESS.fullName}</h3>
-                  <p>
-                    Professional Vedic astrology consultation for relationship, marriage, career, and personal guidance. Designed to make it easy for clients to connect, ask questions, and request appointments with confidence.
-                  </p>
-                  <div className="mini-stats">
-                    <div><MapPin size={16} /><span>{BUSINESS.city}</span></div>
-                    <div><Globe size={16} /><span>{BUSINESS.languages}</span></div>
-                    <div><Clock3 size={16} /><span>{BUSINESS.hours}</span></div>
+                  <div className="hero-quote">
+                    <Quote size={26} />
+                    <p>Bringing positive change to people’s lives through thoughtful astrological guidance.</p>
+                  </div>
+                  <div className="credential-strip">
+                    <strong>{BUSINESS.credential}</strong>
+                    <span>{BUSINESS.institute}</span>
+                    <span>Grade {BUSINESS.grade}</span>
                   </div>
                 </Card>
               </motion.div>
             </div>
           </section>
 
-          <section className="section">
-            <div className="container benefit-grid">
-              {BENEFITS.map((item, index) => {
-                const Icon = item.icon;
-                return (
-                  <motion.div key={item.title} initial={{ opacity: 0, y: 18 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.45, delay: index * 0.06 }}>
-                    <Card className="benefit-card">
-                      <div className="icon-box"><Icon size={20} /></div>
-                      <h3>{item.title}</h3>
-                      <p>{item.text}</p>
-                    </Card>
-                  </motion.div>
-                );
-              })}
-            </div>
-          </section>
-
-          <section id="services" className="section">
+          <section id="services" className="section section-light">
             <div className="container">
               <SectionTitle
-                label="Services"
-                title="Astrology Consultation Services"
-                text="Consultations are available for key areas of life including marriage, relationships, career, and personal guidance. Service details can be expanded further as the practice grows."
+                label="Areas of Guidance"
+                title="Guidance for the areas of life that matter most"
+                text="Each consultation is shaped around your concern and individual circumstances rather than a generic reading."
+                align="center"
               />
               <div className="service-grid">
-                {SERVICES.map((item, index) => (
-                  <motion.div key={item.title} initial={{ opacity: 0, y: 18 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.45, delay: index * 0.06 }}>
-                    <Card className="service-card">
-                      <div className="icon-box"><Sparkles size={20} /></div>
-                      <h3>{item.title}</h3>
-                      <p className="service-subtitle">{item.subtitle}</p>
-                      <p>{item.description}</p>
-                      <div className="service-footer">
-                        <span>Price discussed after contact</span>
-                        <a href="#appointment" className="inline-link">Request <ChevronRight size={16} /></a>
-                      </div>
-                    </Card>
-                  </motion.div>
-                ))}
+                {SERVICES.map((item, index) => {
+                  const Icon = item.icon;
+                  return (
+                    <motion.div key={item.title} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.15 }} transition={{ duration: 0.4, delay: index * 0.04 }}>
+                      <Card className={`service-card ${item.title === "Vastu Guidance" ? "service-featured" : ""}`}>
+                        <div className="icon-box"><Icon size={21} /></div>
+                        <h3>{item.title}</h3>
+                        <p>{item.description}</p>
+                        <a href="#appointment" className="inline-link">Request consultation <ChevronRight size={16} /></a>
+                      </Card>
+                    </motion.div>
+                  );
+                })}
               </div>
             </div>
           </section>
 
-          <section id="about" className="section">
-            <div className="container about-grid">
-              <Card className="content-card">
-                <SectionTitle
-                  label="About"
-                  title="About Shruti Aggarwal"
-                  text="Shruti Aggarwal offers Vedic astrology consultation with a professional, respectful, and client-focused approach."
-                />
-                <div className="content-stack">
-                  <p>
-                    Consultations are designed to help individuals seek clarity on important matters related to marriage, relationships, career, and personal life decisions.
-                  </p>
-                  <p>
-                    With consultation available in both Hindi and English, the practice is positioned to serve clients in New Delhi as well as those seeking online guidance from other locations.
-                  </p>
-                </div>
-              </Card>
-
-              <Card id="contact" className="content-card">
-                <h3>Professional Credentials</h3>
-                <div className="contact-list">
-                  <div className="contact-item">
-                    <GraduationCap size={18} />
-                    <div>
-                      <p className="contact-label">Qualification</p>
-                      <p>{BUSINESS.credential}</p>
-                    </div>
-                  </div>
-                  <div className="contact-item">
-                    <Globe size={18} />
-                    <div>
-                      <p className="contact-label">Languages</p>
-                      <p>Hindi & English Consultation</p>
-                    </div>
-                  </div>
-                  <div className="contact-item">
-                    <MapPin size={18} />
-                    <div>
-                      <p className="contact-label">Location</p>
-                      <p>New Delhi Based</p>
-                    </div>
-                  </div>
-                  <div className="contact-item">
-                    <CalendarDays size={18} />
-                    <div>
-                      <p className="contact-label">Availability</p>
-                      <p>Online Consultation Available</p>
-                    </div>
-                  </div>
-                </div>
-              </Card>
-            </div>
-          </section>
-
-          <section id="credentials" className="section">
-            <div className="container credentials-grid">
-              <Card className="certificate-card">
-                <img src={certificate} alt="Certificate for Shruti Aggarwal Master in Astrology" className="certificate-image" />
-              </Card>
-              <Card className="content-card">
-                <SectionTitle
-                  label="Credentials"
-                  title="Verified professional qualification"
-                  text="A strong professional presence is built on visible trust signals. This qualification helps communicate credibility and seriousness to new visitors."
-                />
-                <div className="content-stack">
-                  <p><strong>Qualification:</strong> {BUSINESS.credential}</p>
-                  <p><strong>Institution:</strong> {BUSINESS.institute}</p>
-                  <p><strong>Grade:</strong> {BUSINESS.grade}</p>
-                  <p>
-                    This credentials section can be expanded later with more achievements, additional certifications, practitioner photo, and real client reviews.
-                  </p>
-                </div>
-              </Card>
-            </div>
-          </section>
-
-          <section id="reviews" className="section">
+          <section className="section why-section">
             <div className="container">
               <SectionTitle
-                label="Testimonials"
-                title="Client Testimonials"
-                text="These can be replaced with real client reviews as the practice grows."
+                label="Why Consult Shruti"
+                title="A thoughtful, personalized approach"
+                text="Formal study, individual attention, and practical guidance come together in a consultation designed around your questions."
+                align="center"
               />
-              <div className="review-grid">
-                {REVIEWS.map((review, index) => (
-                  <motion.div key={review.name} initial={{ opacity: 0, y: 18 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.45, delay: index * 0.06 }}>
-                    <Card className="review-card">
-                      <div className="stars">
-                        {Array.from({ length: 5 }).map((_, i) => (
-                          <Star key={i} size={16} fill="currentColor" />
-                        ))}
+              <div className="why-grid">
+                {WHY_SHRUTI.map((item, index) => {
+                  const Icon = item.icon;
+                  return (
+                    <motion.div key={item.title} initial={{ opacity: 0, y: 14 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.4, delay: index * 0.04 }}>
+                      <div className="why-item">
+                        <div className="why-icon"><Icon size={22} /></div>
+                        <h3>{item.title}</h3>
+                        <p>{item.text}</p>
                       </div>
-                      <p>{review.text}</p>
-                      <strong>{review.name}</strong>
-                    </Card>
-                  </motion.div>
-                ))}
+                    </motion.div>
+                  );
+                })}
               </div>
             </div>
           </section>
 
-          <section id="appointment" className="section">
-            <div className="container appointment-grid">
-              <Card className="content-card accent-card">
+          <section className="section remedies-section">
+            <div className="container remedies-grid">
+              <motion.div initial={{ opacity: 0, x: -16 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}>
+                <div className="remedies-mark"><Sparkles size={28} /></div>
                 <SectionTitle
-                  label="Book"
-                  title="Request a Consultation"
-                  text="To request an appointment, fill in the form and continue on WhatsApp, or send your details by email. Consultation timing and fee are discussed after initial contact."
+                  label="Personalized Remedies"
+                  title="Guidance that continues beyond the consultation"
+                  text="Where appropriate, Shruti may recommend personalized and practical remedies based on the individual chart, the concern being discussed, and the wider consultation context."
                 />
-                <div className="steps">
-                  {[
-                    "Fill in the form with your details and preferred consultation type.",
-                    "Continue instantly on WhatsApp or send the request by email.",
-                    "Consultation timing and fee are discussed after contact.",
-                  ].map((step) => (
-                    <div key={step} className="step-item">
-                      <CheckCircle2 size={18} />
-                      <p>{step}</p>
-                    </div>
+              </motion.div>
+              <Card className="remedies-card">
+                <h3>Who may find a consultation useful?</h3>
+                <div className="concern-list">
+                  {["Career or business uncertainty", "Marriage or relationship concerns", "Family or child-related questions", "Debt or stuck financial matters", "Major life decisions", "Vastu-related concerns"].map((item) => (
+                    <div key={item}><CheckCircle2 size={17} /><span>{item}</span></div>
                   ))}
                 </div>
               </Card>
+            </div>
+          </section>
 
-              <Card className="form-card">
-                <h3>Appointment Request</h3>
-                <p className="form-text">Complete the form below to continue directly on WhatsApp.</p>
-                <form onSubmit={handleSubmit} className="appointment-form">
-                  <div className="two-col">
-                    <input value={form.name} onChange={(e) => handleChange("name", e.target.value)} placeholder="Full name / पूरा नाम" />
-                    <input value={form.phone} onChange={(e) => handleChange("phone", e.target.value)} placeholder="Phone number / फ़ोन नंबर" />
-                  </div>
-                  <div className="two-col">
-                    <input value={form.email} onChange={(e) => handleChange("email", e.target.value)} placeholder="Email address / ईमेल" />
-                    <input type="date" value={form.date} onChange={(e) => handleChange("date", e.target.value)} />
-                  </div>
-                  <select value={service} onChange={(e) => setService(e.target.value)}>
-                    <option value="">Select service / सेवा चुनें</option>
-                    {SERVICES.map((item) => (
-                      <option key={item.title} value={item.title}>{item.title}</option>
-                    ))}
-                  </select>
-                  <input value={form.birthDetails} onChange={(e) => handleChange("birthDetails", e.target.value)} placeholder="Birth details (Date, Time, Place) / जन्म विवरण" />
-                  <textarea rows={5} value={form.message} onChange={(e) => handleChange("message", e.target.value)} placeholder="Message / अपनी आवश्यकता लिखें" />
-                  <div className="two-col">
-                    <button type="submit" className="btn btn-primary wide-btn"><MessageCircle size={16} /> Continue on WhatsApp</button>
-                    <a href={mailtoUrl} className="btn btn-secondary wide-btn"><Mail size={16} /> Send by Email</a>
-                  </div>
-                </form>
+          <section id="about" className="section section-light">
+            <div className="container about-grid">
+              <div>
+                <SectionTitle
+                  label="About Shruti"
+                  title="Traditional Vedic Astrology with a practical, personal approach"
+                  text="Shruti Aggarwal offers Vedic Astrology consultations focused on helping people understand important life patterns, questions, and decisions through the framework of Jyotish and the Kundli."
+                />
+                <div className="content-stack">
+                  <p>
+                    A Kundli is a personalized birth chart based on the positions of celestial bodies at the time and place of birth. Shruti uses this framework to explore areas such as career, relationships, family, finance, and significant periods in life.
+                  </p>
+                  <blockquote>
+                    “My aim is to bring positive change to someone’s life through astrological guidance.”
+                  </blockquote>
+                  <p className="small-note">Consultations are available in Hindi and English.</p>
+                </div>
+              </div>
+
+              <div className="credentials-panel">
+                <Card className="certificate-card">
+                  <img src={certificate} alt="Shruti Aggarwal Master in Astrology certificate" className="certificate-image" />
+                </Card>
+                <div className="credential-copy">
+                  <p className="section-label">Qualification</p>
+                  <h3>{BUSINESS.credential}</h3>
+                  <p>{BUSINESS.institute}</p>
+                  <strong>Grade {BUSINESS.grade}</strong>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section id="reviews" className="section reviews-section">
+            <div className="container reviews-layout">
+              <div>
+                <SectionTitle
+                  label="Client Experiences"
+                  title="Real feedback, shared privately"
+                  text="Client names are not displayed. Genuine testimonials will be added here only with permission and may identify the consultation category without revealing personal details."
+                />
+              </div>
+              <Card className="review-invite">
+                <Quote size={28} />
+                <h3>Have you consulted with Shruti?</h3>
+                <p>You can share your experience privately on WhatsApp. Feedback is never published without approval.</p>
+                <a href={reviewWhatsappUrl} target="_blank" rel="noreferrer" className="btn btn-secondary">
+                  <MessageCircle size={17} /> Share Your Experience
+                </a>
               </Card>
             </div>
           </section>
 
-          <section id="faq" className="section">
+          <section id="faq" className="section section-light">
             <div className="container">
-              <SectionTitle
-                label="FAQ"
-                title="Frequently Asked Questions"
-                text="Clear answers help first-time visitors feel comfortable contacting you."
-              />
+              <SectionTitle label="FAQ" title="Before you get in touch" align="center" />
               <div className="faq-grid">
                 {FAQS.map((item) => (
                   <Card key={item.q} className="faq-card">
@@ -494,21 +432,63 @@ export default function App() {
               </div>
             </div>
           </section>
+
+          <section id="appointment" className="section booking-section">
+            <div className="container appointment-grid">
+              <div className="booking-copy">
+                <SectionTitle
+                  label="Book a Consultation"
+                  title="Start with a simple conversation"
+                  text="Share the area you would like guidance on. Consultation details and timing are then coordinated directly with Shruti."
+                />
+                <div className="steps">
+                  {[
+                    "Contact Shruti on WhatsApp or send the enquiry form.",
+                    "Briefly share the area you would like guidance on.",
+                    "Confirm the consultation timing and details directly with Shruti.",
+                    "Attend your personalized consultation online.",
+                  ].map((step, index) => (
+                    <div key={step} className="step-item">
+                      <span className="step-number">{String(index + 1).padStart(2, "0")}</span>
+                      <p>{step}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <Card className="form-card">
+                <h3>Consultation Enquiry</h3>
+                <p className="form-text">Complete the details below, then continue on WhatsApp or send the enquiry by email.</p>
+                <form onSubmit={handleSubmit} className="appointment-form">
+                  <div className="two-col">
+                    <input value={form.name} onChange={(e) => handleChange("name", e.target.value)} placeholder="Name" aria-label="Name" />
+                    <input value={form.phone} onChange={(e) => handleChange("phone", e.target.value)} placeholder="WhatsApp number" aria-label="WhatsApp number" />
+                  </div>
+                  <input type="email" value={form.email} onChange={(e) => handleChange("email", e.target.value)} placeholder="Email" aria-label="Email" />
+                  <select value={service} onChange={(e) => setService(e.target.value)} aria-label="Service interested in">
+                    <option value="">Service interested in</option>
+                    {FORM_SERVICES.map((item) => <option key={item} value={item}>{item}</option>)}
+                  </select>
+                  <textarea rows={5} value={form.message} onChange={(e) => handleChange("message", e.target.value)} placeholder="How can Shruti help you?" aria-label="Message" />
+                  <button type="submit" className="btn btn-primary wide-btn"><MessageCircle size={17} /> Continue on WhatsApp</button>
+                  <a href={mailtoUrl} className="btn btn-secondary wide-btn"><Mail size={17} /> Send Enquiry by Email</a>
+                </form>
+              </Card>
+            </div>
+          </section>
         </main>
 
         <div className="floating-cta">
           <a href={quickWhatsappUrl} target="_blank" rel="noreferrer" className="btn btn-primary">
-            <MessageCircle size={16} /> WhatsApp
+            <MessageCircle size={17} /> Book Consultation
           </a>
         </div>
 
         <footer className="site-footer">
           <div className="container footer-inner">
-            <p>Vedic Astrology by Shruti Aggarwal provides professional astrology consultation in New Delhi and online for marriage, relationship, career, and personal guidance.</p>
-            <div className="footer-links">
-              <a href={`mailto:${BUSINESS.email}`}>Email</a>
-              <a href={quickWhatsappUrl} target="_blank" rel="noreferrer">WhatsApp</a>
-            </div>
+            <img src={logo} alt="Vedic Astrology by Shruti" className="footer-logo" />
+            <p>Vedic Astrology by Shruti</p>
+            <a href={quickWhatsappUrl} target="_blank" rel="noreferrer" className="footer-whatsapp">WhatsApp</a>
           </div>
         </footer>
       </div>
